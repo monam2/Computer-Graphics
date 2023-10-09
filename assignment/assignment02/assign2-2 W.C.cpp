@@ -10,14 +10,14 @@
 using namespace std;
 using namespace glm;
 
-vector<vec4> points; 
+vector<vec4> points;
 
 void DrawBox(vector<vec4> points, vec3 color)
 {
-	
+
 
 	glColor3f(color[0], color[1], color[2]);
-	glBegin(GL_LINES); 
+	glBegin(GL_LINES);
 
 	for (int i = 0; i < 3; i++)
 	{
@@ -46,11 +46,18 @@ void ViewportTest()
 	glViewport(0, 0, 300, 300);
 	//draw square
 
-	 //1번
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	//1번
 	DrawBox(points, vec3(1, 1, 1));
 
-	//2번 : x 0.3 평행이동
 	mat4 translateMatrix = translate(mat4(1), vec3(0.3, 0, 0));
+	mat4 rotateMatrix = rotate(mat4(1), radians(30.0f), vec3(0, 0, 1));
+	mat4 translateMatrix2 = translate(mat4(1), vec3(0, 0.4, 0));
+
+	//2번 : x 0.3 평행이동
+
 	vector<vec4> translatedPoints;
 	for (const auto& point : points)
 	{
@@ -61,9 +68,9 @@ void ViewportTest()
 
 
 	//3번 : 30도 회전
-	mat4 rotateMatrix = rotate(mat4(1), radians(30.0f), vec3(0, 0, 1));
+
 	vector<vec4> rotatedPoints;
-	for (const auto& point : points)
+	for (const auto& point : translatedPoints)
 	{
 		vec4 rotatedPoint = rotateMatrix * point;
 		rotatedPoints.push_back(rotatedPoint);
@@ -71,9 +78,9 @@ void ViewportTest()
 	DrawBox(rotatedPoints, vec3(0, 0, 1));
 
 	//4번 : y 0.4평행이동
-	mat4 translateMatrix2 = translate(mat4(1), vec3(0, 0.4, 0));
+
 	vector<vec4> translatedPoints2;
-	for (const auto& point : points)
+	for (const auto& point : rotatedPoints)
 	{
 		vec4 translatedPoint = translateMatrix2 * point;
 		translatedPoints2.push_back(translatedPoint);
