@@ -13,7 +13,7 @@ int maze[30][30] = {
 {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 {1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1},
 {1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1},
-{1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1},
+{1, 2, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1},
 {1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1},
 {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1},
 {1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1},
@@ -42,18 +42,18 @@ int maze[30][30] = {
 {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 };
 
-#define FPS 30
+#define FPS 60 // 1000/FPS로 타이머 콜백할거임
 #define TO_RADIANS 3.14/180.0
 
-GLuint g_textureID = -1;
+GLuint g_textureID1 = -1; //텍스쳐1 : Data/wall
+GLuint g_textureID2 = -1; //텍스쳐2 : Data/ground
 
-//윈도우 창 너비,높이 설정
-const int width = 16 * 50;
-const int height = 9 * 50;
+const int width = 800; //윈도우 창 너비,높이
+const int height = 600;
 
 
 float pitch = 0.0, yaw = 0.0;
-float camX = -1, camZ = 1;
+float camX = -1, camZ = 1; //카메라 초기위치(시작점)
 
 
 bool Forward = false;
@@ -61,27 +61,51 @@ bool Backward = false;
 bool Left = false;
 bool Right = false;
 
+float camSpeed = 10.0; //이속
 
-void loadTexture(void) { //텍스쳐 로딩
-    AUX_RGBImageRec* pTextureImage = auxDIBImageLoad("C:/Users/182947/source/repos/miro/Data/Data.bmp");
+float teapotRotation = 2.5; // 티팟 회전 속도
+float teapotVerticalMotion = 0.0;
+float teopotRotateAngle = 1;
+bool teapotMovingUp = true;
 
-    if (pTextureImage != NULL) {
-        glGenTextures(1, &g_textureID);
 
-        glBindTexture(GL_TEXTURE_2D, g_textureID);
+void loadTexture(void) {
+    AUX_RGBImageRec* pTextureImage1 = auxDIBImageLoad("C:/Users/kcw01/source/repos/Project11/Project11/Data/Wall.bmp");
+
+    if (pTextureImage1 != NULL) {
+        glGenTextures(1, &g_textureID1);
+        glBindTexture(GL_TEXTURE_2D, g_textureID1);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, 3, pTextureImage->sizeX, pTextureImage->sizeY, 0,
-            GL_RGB, GL_UNSIGNED_BYTE, pTextureImage->data);
+        glTexImage2D(GL_TEXTURE_2D, 0, 3, pTextureImage1->sizeX, pTextureImage1->sizeY, 0,
+            GL_RGB, GL_UNSIGNED_BYTE, pTextureImage1->data);
     }
 
-    if (pTextureImage) {
-        if (pTextureImage->data)
-            free(pTextureImage->data);
+    AUX_RGBImageRec* pTextureImage2 = auxDIBImageLoad("C:/Users/kcw01/source/repos/Project11/Project11/Data/ground.bmp");
+    if (pTextureImage2 != NULL) {
+        glGenTextures(1, &g_textureID2);
+        glBindTexture(GL_TEXTURE_2D, g_textureID2);
 
-        free(pTextureImage);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, 3, pTextureImage2->sizeX, pTextureImage2->sizeY, 0,
+            GL_RGB, GL_UNSIGNED_BYTE, pTextureImage2->data);
+    }
+
+    if (pTextureImage1) {
+        if (pTextureImage1->data)
+            free(pTextureImage1->data);
+
+        free(pTextureImage1);
+    }
+    if (pTextureImage2) {
+        if (pTextureImage2->data)
+            free(pTextureImage2->data);
+
+        free(pTextureImage2);
     }
 }
 
@@ -93,59 +117,44 @@ void init() //마우스 커서를 윈도우 창의 높이/2, 너비/2 지점에 
     glutWarpPointer(width / 2, height / 2);
 }
 
-void timer(int)
-{
-    glutPostRedisplay();
-    glutWarpPointer(width / 2, height / 2);
-    glutTimerFunc(1000 / FPS, timer, 0);
-}
-
 void camera() {
     if (Forward)
     {
-        camX += cos((yaw + 90) * TO_RADIANS) / 5.0;
-        camZ -= sin((yaw + 90) * TO_RADIANS) / 5.0;
+        camX += cos((yaw + 90) * TO_RADIANS) / camSpeed;
+        camZ -= sin((yaw + 90) * TO_RADIANS) / camSpeed;
     }
     if (Backward)
     {
-        camX += cos((yaw + 90 + 180) * TO_RADIANS) / 5.0;
-        camZ -= sin((yaw + 90 + 180) * TO_RADIANS) / 5.0;
+        camX += cos((yaw + 90 + 180) * TO_RADIANS) / camSpeed;
+        camZ -= sin((yaw + 90 + 180) * TO_RADIANS) / camSpeed;
     }
     if (Left)
     {
-        camX += cos((yaw + 90 + 90) * TO_RADIANS) / 5.0;
-        camZ -= sin((yaw + 90 + 90) * TO_RADIANS) / 5.0;
+        camX += cos((yaw + 90 + 90) * TO_RADIANS) / camSpeed;
+        camZ -= sin((yaw + 90 + 90) * TO_RADIANS) / camSpeed;
     }
     if (Right)
     {
-        camX += cos((yaw + 90 - 90) * TO_RADIANS) / 5.0;
-        camZ -= sin((yaw + 90 - 90) * TO_RADIANS) / 5.0;
+        camX += cos((yaw + 90 - 90) * TO_RADIANS) / camSpeed;
+        camZ -= sin((yaw + 90 - 90) * TO_RADIANS) / camSpeed;
     }
+    if (pitch >= 80)
+        pitch = 80;
+    if (pitch <= -40)
+        pitch = -40;
 
-    /*limit the values of pitch
-      between -60 and 70
-    */
-    if (pitch >= 70)
-        pitch = 70;
-    if (pitch <= -60)
-        pitch = -60;
-
-    glRotatef(-pitch, 1.0, 0.0, 0.0); // Along X axis
-    glRotatef(-yaw, 0.0, 1.0, 0.0);    //Along Y axis
+    glRotatef(-pitch, 1.0, 0.0, 0.0);
+    glRotatef(-yaw, 0.0, 1.0, 0.0);
 
     glTranslatef(-camX, 0.0, -camZ);
 }
 
 void passive_motion(int x, int y)
 {
-    /* two variables to store X and Y coordinates, as observed from the center
-      of the window
-    */
     int dev_x, dev_y;
     dev_x = (width / 2) - x;
     dev_y = (height / 2) - y;
 
-    /* apply the changes to pitch and yaw*/
     yaw += (float)dev_x / 10.0;
     pitch += (float)dev_y / 10.0;
 }
@@ -203,56 +212,108 @@ void reshape(int w, int h) {
     glMatrixMode(GL_MODELVIEW);
 }
 
+void draw_block() {
+    glColor3f(1, 1, 1);
+    glPushMatrix();
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, g_textureID1);
+
+    // Front Face
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0, 0.0); glVertex3f(-0.5, -0.5, 0.5);
+    glTexCoord2f(1.0, 0.0); glVertex3f(0.5, -0.5, 0.5);
+    glTexCoord2f(1.0, 1.0); glVertex3f(0.5, 0.5, 0.5);
+    glTexCoord2f(0.0, 1.0); glVertex3f(-0.5, 0.5, 0.5);
+    glEnd();
+
+    // Back Face
+    glBegin(GL_QUADS);
+    glTexCoord2f(1.0, 0.0); glVertex3f(-0.5, -0.5, -0.5);
+    glTexCoord2f(1.0, 1.0); glVertex3f(-0.5, 0.5, -0.5);
+    glTexCoord2f(0.0, 1.0); glVertex3f(0.5, 0.5, -0.5);
+    glTexCoord2f(0.0, 0.0); glVertex3f(0.5, -0.5, -0.5);
+    glEnd();
+
+    // Top Face
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0, 1.0); glVertex3f(-0.5, 0.5, -0.5);
+    glTexCoord2f(0.0, 0.0); glVertex3f(-0.5, 0.5, 0.5);
+    glTexCoord2f(1.0, 0.0); glVertex3f(0.5, 0.5, 0.5);
+    glTexCoord2f(1.0, 1.0); glVertex3f(0.5, 0.5, -0.5);
+    glEnd();
+
+    // Bottom Face
+    glBegin(GL_QUADS);
+    glTexCoord2f(1.0, 1.0); glVertex3f(-0.5, -0.5, -0.5);
+    glTexCoord2f(0.0, 1.0); glVertex3f(0.5, -0.5, -0.5);
+    glTexCoord2f(0.0, 0.0); glVertex3f(0.5, -0.5, 0.5);
+    glTexCoord2f(1.0, 0.0); glVertex3f(-0.5, -0.5, 0.5);
+    glEnd();
+
+    // Right Face
+    glBegin(GL_QUADS);
+    glTexCoord2f(1.0, 0.0); glVertex3f(0.5, -0.5, -0.5);
+    glTexCoord2f(1.0, 1.0); glVertex3f(0.5, 0.5, -0.5);
+    glTexCoord2f(0.0, 1.0); glVertex3f(0.5, 0.5, 0.5);
+    glTexCoord2f(0.0, 0.0); glVertex3f(0.5, -0.5, 0.5);
+    glEnd();
+
+    // Left Face
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0, 0.0); glVertex3f(-0.5, -0.5, -0.5);
+    glTexCoord2f(1.0, 0.0); glVertex3f(-0.5, -0.5, 0.5);
+    glTexCoord2f(1.0, 1.0); glVertex3f(-0.5, 0.5, 0.5);
+    glTexCoord2f(0.0, 1.0); glVertex3f(-0.5, 0.5, -0.5);
+    glEnd();
+
+    glPopMatrix();
+}
+
+void drawTeapot(float x, float y, float z) {
+    glPushMatrix();
+    glTranslatef(x, y + teapotVerticalMotion, z);
+    glRotatef(teopotRotateAngle, 0, 1, 0);
+    glutSolidTeapot(0.25);  // teapot 크기
+    glPopMatrix();
+}
+
+
+void teapottimer(int) {
+    // 티팟의 위아래 움직임 업데이트
+    if (teapotMovingUp) {
+        teapotVerticalMotion += 0.005;
+        if (teapotVerticalMotion >= 0.15) {
+            teapotMovingUp = false;
+        }
+    }
+    else {
+        teapotVerticalMotion -= 0.005;
+        if (teapotVerticalMotion <= -0.1) {
+            teapotMovingUp = true;
+        }
+    }
+    teopotRotateAngle += 1;
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
+
+    glutPostRedisplay();
+    glutTimerFunc(1000 / FPS, teapottimer, 0);
+}
+
 void drawMaze() { //미로 그리기 + 텍스쳐
 
     for (int i = 0; i < 30; i++) {
         for (int j = 0; j < 30; j++) {
-            glPushMatrix();
-            glTranslatef(-i, 0.0, j);  // xz 평면
             if (maze[i][j] == 1) { //벽
-                glEnable(GL_TEXTURE_2D);
-                glBindTexture(GL_TEXTURE_2D, g_textureID);
+                glPushMatrix();
+                glTranslatef(-i, 0.0, j);
+                draw_block();
+                glPopMatrix();
 
-                glBegin(GL_QUADS);
-                //윗면
-                glTexCoord2f(0.0, 1.0); glVertex3f(-0.5, 0.5, -0.5);
-                glTexCoord2f(1.0, 1.0); glVertex3f(0.5, 0.5, -0.5);
-                glTexCoord2f(1.0, 0.0); glVertex3f(0.5, 0.5, 0.5);
-                glTexCoord2f(0.0, 0.0); glVertex3f(-0.5, 0.5, 0.5);
-
-                //아랫면
-                glTexCoord2f(0.0, 0.0); glVertex3f(-0.5, -0.5, 0.5);
-                glTexCoord2f(1.0, 0.0); glVertex3f(0.5, -0.5, 0.5);
-                glTexCoord2f(1.0, 1.0); glVertex3f(0.5, -0.5, -0.5);
-                glTexCoord2f(0.0, 1.0); glVertex3f(-0.5, -0.5, -0.5);
-
-                // 앞면
-                glTexCoord2f(0.0, 0.0); glVertex3f(-0.5, -0.5, -0.5);
-                glTexCoord2f(0.0, 1.0); glVertex3f(0.5, -0.5, -0.5);
-                glTexCoord2f(1.0, 1.0); glVertex3f(0.5, 0.5, -0.5);
-                glTexCoord2f(1.0, 0.0); glVertex3f(-0.5, 0.5, -0.5);
-
-                // 뒷면
-                glTexCoord2f(0.0, 0.0); glVertex3f(-0.5, -0.5, 0.5);
-                glTexCoord2f(0.0, 1.0); glVertex3f(0.5, -0.5, 0.5);
-                glTexCoord2f(1.0, 1.0); glVertex3f(0.5, 0.5, 0.5);
-                glTexCoord2f(1.0, 0.0); glVertex3f(-0.5, 0.5, 0.5);
-
-                //왼쪽면
-                glTexCoord2f(0.0, 0.0); glVertex3f(-0.5, -0.5, -0.5);
-                glTexCoord2f(0.0, 1.0); glVertex3f(-0.5, 0.5, -0.5);
-                glTexCoord2f(1.0, 1.0); glVertex3f(-0.5, 0.5, 0.5);
-                glTexCoord2f(1.0, 0.0); glVertex3f(-0.5, -0.5, 0.5);
-
-                //오른쪽면
-                glTexCoord2f(0.0, 0.0); glVertex3f(0.5, -0.5, 0.5);
-                glTexCoord2f(0.0, 1.0); glVertex3f(0.5, 0.5, 0.5);
-                glTexCoord2f(1.0, 1.0); glVertex3f(0.5, 0.5, -0.5);
-                glTexCoord2f(1.0, 0.0); glVertex3f(0.5, -0.5, -0.5);
-
-                glEnd();
-
-                glDisable(GL_TEXTURE_2D);
+                glColor3d(1, 0, 0);
+            }
+            else if (maze[i][j] == 2) { //도착점
+                drawTeapot(-i, 0.0, j);
             }
             else { //빈공간
 
@@ -263,21 +324,49 @@ void drawMaze() { //미로 그리기 + 텍스쳐
     glutSwapBuffers();
 }
 
+
+
+void drawground() {
+    // 바닥 그리기
+    glPushMatrix();
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, g_textureID2);
+
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0, 0.0); glVertex3f(0, 0, 0);  // 좌측 상단
+    glTexCoord2f(0.0, 1.0); glVertex3f(-30, 0, 0);   // 좌측 하단
+    glTexCoord2f(1.0, 1.0); glVertex3f(0, 0, 30);    // 우측 하단
+    glTexCoord2f(1.0, 0.0); glVertex3f(-30, 0, 30);   // 우측 상단
+    glEnd();
+
+    glPopMatrix();
+}
+
 void display()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
     camera();
     drawMaze();
-
+    drawground();
     glutSwapBuffers();
+}
+
+void timer(int)
+{
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
+
+    glutPostRedisplay();
+    glutWarpPointer(width / 2, height / 2);
+    glutTimerFunc(1000 / FPS, timer, 0);
 }
 
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(800, 600);  // 창 크기 800*600
-    glutCreateWindow("aaaa");
+    glutCreateWindow("182947 강창우");
 
     glEnable(GL_DEPTH_TEST);
 
@@ -286,7 +375,8 @@ int main(int argc, char** argv) {
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
     glutPassiveMotionFunc(passive_motion);
-    glutTimerFunc(0, timer, 0);    //more info about this is given below at definition of timer()
+    glutTimerFunc(0, timer, 0);
+    glutTimerFunc(0, teapottimer, 0);
     glutKeyboardFunc(keyboard);
     glutKeyboardUpFunc(keyboard_up);
 
