@@ -38,7 +38,7 @@ int maze[30][30] = {
 {1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1},
 {1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1},
 {1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1},
-{1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 2},
+{1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0},
 {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 };
 
@@ -55,6 +55,7 @@ const int height = 600;
 
 float pitch = 0.0, yaw = 0.0;
 float camX = 1, camZ = 1; //카메라 초기위치(시작점)
+float cameraSpeed = 15.0;
 
 
 bool Forward = false;
@@ -62,12 +63,17 @@ bool Backward = false;
 bool Left = false;
 bool Right = false;
 
-float camSpeed = 18.0; //이속
+float camSpeed = 50.0; //이속
 
 float teapotRotation = 5.0; // 티팟 회전 속도
 float teapotVerticalMotion = 0.0;
 float teopotRotateAngle = 1;
 bool teapotMovingUp = true;
+
+//티팟의 위치 저장 -> 티팟과 충돌 : 이벤트 실행
+float teapotX = 0.0;
+float teapotY = 0.0;
+float teapotZ = 0.0;
 
 
 void loadTexture(void) {
@@ -174,8 +180,8 @@ void passive_motion(int x, int y)
     dev_x = (width / 2) - x;
     dev_y = (height / 2) - y;
 
-    yaw += (float)dev_x / 10.0;
-    pitch += (float)dev_y / 10.0;
+    yaw += (float)dev_x / cameraSpeed;
+    pitch += (float)dev_y / cameraSpeed;
 }
 
 void keyboard(unsigned char key, int x, int y)
@@ -228,7 +234,7 @@ void reshape(int w, int h) {
     glViewport(0, 0, w, h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(70, 16/10, 0.1, 200);
+    gluPerspective(70, 16.0/10.0, 0.1, 200);
     glMatrixMode(GL_MODELVIEW);
     
 }
@@ -368,7 +374,6 @@ void drawground() {
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, g_textureID2);
     glBegin(GL_QUADS);
-    glBegin(GL_QUADS);
     for (int i = -10; i < 10; i++) {
         for (int j = -10; j < 10; j++) {
             glTexCoord2f(0.0, 0.0); glVertex3f(i * 30, -0.5, j * 30);                 // 좌측 상단
@@ -378,8 +383,6 @@ void drawground() {
         }
     }
     glEnd();
-    glEnd();
-
     glPopMatrix();
 }
 
@@ -397,7 +400,10 @@ void drawMaze() { //미로 그리기 + 텍스쳐
             else if (maze[i][j] == 2) { //도착점
                 glColor3d(1, 0, 0);
                 glPushMatrix();
-                drawTeapot(-i, 0.0, j);
+                teapotX = -i; //티팟 위치 저장
+                teapotY = 0.0;
+                teapotZ = j;
+                drawTeapot(teapotX, teapotY, teapotZ);
                 glPopMatrix();
             }
             else { //빈공간
@@ -410,24 +416,38 @@ void drawMaze() { //미로 그리기 + 텍스쳐
     drawground();
 }
 
+#include <cmath>
+
+// 충돌 감지 함수
+bool checkCollision(double pointX, double pointY, double pointZ, double teapotX, double teapotY, double teapotZ, double collisionDistance) {
+    // y 좌표를 무시하고 x와 z 좌표만을 고려
+    double distanceSquared = (pointX - teapotX) * (pointX - teapotX) + (pointZ - teapotZ) * (pointZ - teapotZ);
+
+    // 충돌 여부를 판단
+    return distanceSquared <= (collisionDistance * collisionDistance);
+}
+
+
 void display()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
     glViewport(width / 2 - 100, 0, 800, height); //오른쪽 뷰포트
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();  // 모델뷰 행렬 초기화
     camera();
     drawMaze();
 
-
     glViewport(0, 0, height, height);//왼쪽 뷰포트
     glLoadIdentity();  // 모델뷰 행렬 초기화
     glMatrixMode(GL_MODELVIEW);
     gluLookAt(
-        -15, 28, 15,
+        -15, 25, 15,
         -15, 0, 15,
         1, 0, 0
     );
+
     drawMaze();
     // 왼쪽 뷰포트에 점 그리기
     glPointSize(8.0f);
@@ -436,8 +456,10 @@ void display()
     glVertex3f(camX, 0.0f, camZ); // 원하는 좌표에 점 찍기
     glEnd();
 
+    if (checkCollision(teapotX, teapotY, teapotZ, camX, 0.0f, camZ, 0.3)) {
+        exit(0);
+    }
 
-    
 
 
     glutSwapBuffers();
