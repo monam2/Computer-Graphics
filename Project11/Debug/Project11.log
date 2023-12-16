@@ -1,0 +1,25 @@
+﻿  소스.cpp
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(154,46): warning C4244: '+=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(155,46): warning C4244: '-=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(159,52): warning C4244: '+=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(160,52): warning C4244: '-=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(164,62): warning C4244: '+=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(165,62): warning C4244: '-=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(169,62): warning C4244: '+=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(170,62): warning C4244: '-=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(337,38): warning C4305: '+=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(343,38): warning C4305: '-=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(399,26): warning C4305: '인수': 'double'에서 'GLfloat'(으)로 잘립니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(405,64): warning C4244: '인수': 'int'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(405,50): warning C4244: '인수': 'int'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(406,70): warning C4244: '인수': 'int'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(406,50): warning C4244: '인수': 'int'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(407,76): warning C4244: '인수': 'int'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(407,56): warning C4244: '인수': 'int'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(408,70): warning C4244: '인수': 'int'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(408,56): warning C4244: '인수': 'int'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(421,39): warning C4244: '인수': 'int'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(421,30): warning C4244: '인수': 'int'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(429,27): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(431,27): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Project11.vcxproj -> C:\Users\kcw01\source\repos\Project11\Debug\Project11.exe

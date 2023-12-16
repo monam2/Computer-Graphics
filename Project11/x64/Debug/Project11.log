@@ -1,0 +1,5 @@
+﻿  소스.cpp
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(22,38): error C2664: 'AUX_RGBImageRec *auxDIBImageLoadW(LPCWSTR)': 인수 1을(를) 'const char [15]'에서 'LPCWSTR'(으)로 변환할 수 없습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(22,54): message : 가리킨 형식이 관련이 없습니다. 변환하려면 reinterpret_cast, C 스타일 캐스트 또는 괄호가 있는 함수 스타일 캐스트가 필요합니다.
+C:\Users\kcw01\source\repos\Project11\Project11\glaux.h(311,28): message : 'auxDIBImageLoadW' 선언을 참조하십시오.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(22,38): message : 인수 목록 '(const char [15])'을(를) 일치시키는 동안
