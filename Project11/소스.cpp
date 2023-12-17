@@ -12,12 +12,13 @@
 #include <stdlib.h>
 #include "glaux.h"
 #pragma comment(lib, "glaux.lib")
+#pragma comment(lib, "legacy_stdio_definitions.lib")
 
 int maze[30][30] = {
 {1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 {1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1},
 {1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1},
-{1, 2, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1},
+{1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1},
 {1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1},
 {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1},
 {1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1},
@@ -42,25 +43,25 @@ int maze[30][30] = {
 {1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1},
 {1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1},
 {1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1},
-{1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0},
+{1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 2},
 {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 };
 
-// ÇÁ·Î±×·¥ ½ÃÀÛ ½Ã°£À» ÀúÀåÇÏ´Â Àü¿ª º¯¼ö
+// í”„ë¡œê·¸ë¨ ì‹œì‘ ì‹œê°„ì„ ì €ì¥í•˜ëŠ” ì „ì—­ ë³€ìˆ˜
 
-#define FPS 60 // 1000/FPS·Î Å¸ÀÌ¸Ó Äİ¹éÇÒ°ÅÀÓ
+#define FPS 60 // 1000/FPSë¡œ íƒ€ì´ë¨¸ ì½œë°±í• ê±°ì„
 #define TO_RADIANS 3.14/180.0
 
-GLuint g_textureID1 = -1; //ÅØ½ºÃÄ1 : Data/wall
-GLuint g_textureID2 = -1; //ÅØ½ºÃÄ2 : Data/Lawn
-GLuint g_textureID3 = -1; //ÅØ½ºÃÄ3 : Data/Sky
+GLuint g_textureID1 = -1; //í…ìŠ¤ì³1 : Data/wall
+GLuint g_textureID2 = -1; //í…ìŠ¤ì³2 : Data/Lawn
+GLuint g_textureID3 = -1; //í…ìŠ¤ì³3 : Data/Sky
 
-const int width = 1400; //À©µµ¿ì Ã¢ ³Êºñ,³ôÀÌ
+const int width = 1400; //ìœˆë„ìš° ì°½ ë„ˆë¹„,ë†’ì´
 const int height = 600;
 
 
 float pitch = 0.0, yaw = 0.0;
-float camX = 1, camZ = 1; //Ä«¸Ş¶ó ÃÊ±âÀ§Ä¡(½ÃÀÛÁ¡)
+float camX = 1, camZ = 1; //ì¹´ë©”ë¼ ì´ˆê¸°ìœ„ì¹˜(ì‹œì‘ì )
 float cameraSpeed = 12.0;
 
 
@@ -69,14 +70,14 @@ bool Backward = false;
 bool Left = false;
 bool Right = false;
 
-float camSpeed = 30.0; //ÀÌ¼Ó
+float camSpeed = 30.0; //ì´ì†
 
-float teapotRotation = 5.0; // Æ¼ÆÌ È¸Àü ¼Óµµ
+float teapotRotation = 5.0; // í‹°íŒŸ íšŒì „ ì†ë„
 float teapotVerticalMotion = 0.0;
 float teopotRotateAngle = 1;
 bool teapotMovingUp = true;
 
-//Æ¼ÆÌÀÇ À§Ä¡ ÀúÀå -> Æ¼ÆÌ°ú Ãæµ¹ : ÀÌº¥Æ® ½ÇÇà
+//í‹°íŒŸì˜ ìœ„ì¹˜ ì €ì¥ -> í‹°íŒŸê³¼ ì¶©ëŒ : ì´ë²¤íŠ¸ ì‹¤í–‰
 float teapotX = 0.0;
 float teapotY = 0.0;
 float teapotZ = 0.0;
@@ -140,7 +141,7 @@ void loadTexture(void) {
     }
 }
 
-void init() //¸¶¿ì½º Ä¿¼­¸¦ À©µµ¿ì Ã¢ÀÇ ³ôÀÌ/2, ³Êºñ/2 ÁöÁ¡¿¡ À§Ä¡
+void init() //ë§ˆìš°ìŠ¤ ì»¤ì„œë¥¼ ìœˆë„ìš° ì°½ì˜ ë†’ì´/2, ë„ˆë¹„/2 ì§€ì ì— ìœ„ì¹˜
 {
     glutSetCursor(GLUT_CURSOR_NONE);
     glEnable(GL_DEPTH_TEST);
@@ -169,9 +170,9 @@ void camera() {
         camX += cos((yaw + 90 - 90) * TO_RADIANS) / camSpeed * 0.5;
         camZ -= sin((yaw + 90 - 90) * TO_RADIANS) / camSpeed * 0.5;
     }
-    if (pitch >= 80)//»ó
+    if (pitch >= 80)//ìƒ
         pitch = 80;
-    if (pitch <= -20)//ÇÏ
+    if (pitch <= -20)//í•˜
         pitch = -20;
     
     glRotatef(-pitch, 1.0, 0.0, 0.0);
@@ -212,18 +213,22 @@ void keyboard(unsigned char key, int x, int y)
         break;
 
     case '[':
+        if (camSpeed == 20.0) break;
         camSpeed += 2.0;
         break;
     case ']':
+        if (camSpeed == 60.0) break;
         camSpeed -= 2.0;
         break;
     case '=':
-        camSpeed = 40;
+        camSpeed = 30;
         break;
     case '<':
+        if (cameraSpeed == 8.0) break;
         cameraSpeed += 0.5;
         break;
     case '>':
+        if (cameraSpeed == 20.0) break;
         cameraSpeed -= 0.5;
         break;
     case '/':
@@ -326,13 +331,13 @@ void drawTeapot(float x, float y, float z) {
     glPushMatrix();
     glTranslatef(x, y + teapotVerticalMotion, z);
     glRotatef(teopotRotateAngle, 0, 1, 0);
-    glutSolidTeapot(0.25);  // teapot Å©±â
+    glutSolidTeapot(0.25);  // teapot í¬ê¸°
     glPopMatrix();
 }
 
 
 void teapottimer(int) {
-    // Æ¼ÆÌÀÇ À§¾Æ·¡ ¿òÁ÷ÀÓ ¾÷µ¥ÀÌÆ®
+    // í‹°íŒŸì˜ ìœ„ì•„ë˜ ì›€ì§ì„ ì—…ë°ì´íŠ¸
     if (teapotMovingUp) {
         teapotVerticalMotion += 0.005;
         if (teapotVerticalMotion >= 0.15) {
@@ -354,39 +359,39 @@ void teapottimer(int) {
 }
 
 void drawsky() {
-    // ÇÏ´Ã ±×¸®±â
+    // í•˜ëŠ˜ ê·¸ë¦¬ê¸°
     glPushMatrix();
     glColor3f(1, 1, 1);
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, g_textureID3);
     glBegin(GL_QUADS);
-    //À­¸é
-    glTexCoord2f(0.0, 0.0); glVertex3f(100,50,-100);// ÁÂÃø »ó´Ü
-    glTexCoord2f(0.0, 1.0); glVertex3f(100,50,100);// ÁÂÃø ÇÏ´Ü
-    glTexCoord2f(1.0, 1.0); glVertex3f(-100,50,100);// ¿ìÃø ÇÏ´Ü
-    glTexCoord2f(1.0, 0.0); glVertex3f(-100,50,-100);// ¿ìÃø »ó´Ü
-    //¿À¸¥ÂÊ¸é
-    glTexCoord2f(0.0, 0.0); glVertex3f(100,50,-100);// ÁÂÃø »ó´Ü
-    glTexCoord2f(0.0, 1.0); glVertex3f(100,-0.5,-100);// ÁÂÃø ÇÏ´Ü
-    glTexCoord2f(1.0, 1.0); glVertex3f(-100,-0.5,-100);// ¿ìÃø ÇÏ´Ü
-    glTexCoord2f(1.0, 0.0); glVertex3f(-100,50,-100);// ¿ìÃø »ó´Ü
-    //¿ŞÂÊ¸é
-    glTexCoord2f(0.0, 0.0); glVertex3f(100, 50, 100);// ÁÂÃø »ó´Ü
-    glTexCoord2f(0.0, 1.0); glVertex3f(100, -0.5, 100);// ÁÂÃø ÇÏ´Ü
-    glTexCoord2f(1.0, 1.0); glVertex3f(-100, -0.5, 100);// ¿ìÃø ÇÏ´Ü
-    glTexCoord2f(1.0, 0.0); glVertex3f(-100, 50, 100);// ¿ìÃø »ó´Ü
+    //ìœ—ë©´
+    glTexCoord2f(0.0, 0.0); glVertex3f(100,50,-100);// ì¢Œì¸¡ ìƒë‹¨
+    glTexCoord2f(0.0, 1.0); glVertex3f(100,50,100);// ì¢Œì¸¡ í•˜ë‹¨
+    glTexCoord2f(1.0, 1.0); glVertex3f(-100,50,100);// ìš°ì¸¡ í•˜ë‹¨
+    glTexCoord2f(1.0, 0.0); glVertex3f(-100,50,-100);// ìš°ì¸¡ ìƒë‹¨
+    //ì˜¤ë¥¸ìª½ë©´
+    glTexCoord2f(0.0, 0.0); glVertex3f(100,50,-100);// ì¢Œì¸¡ ìƒë‹¨
+    glTexCoord2f(0.0, 1.0); glVertex3f(100,-0.5,-100);// ì¢Œì¸¡ í•˜ë‹¨
+    glTexCoord2f(1.0, 1.0); glVertex3f(-100,-0.5,-100);// ìš°ì¸¡ í•˜ë‹¨
+    glTexCoord2f(1.0, 0.0); glVertex3f(-100,50,-100);// ìš°ì¸¡ ìƒë‹¨
+    //ì™¼ìª½ë©´
+    glTexCoord2f(0.0, 0.0); glVertex3f(100, 50, 100);// ì¢Œì¸¡ ìƒë‹¨
+    glTexCoord2f(0.0, 1.0); glVertex3f(100, -0.5, 100);// ì¢Œì¸¡ í•˜ë‹¨
+    glTexCoord2f(1.0, 1.0); glVertex3f(-100, -0.5, 100);// ìš°ì¸¡ í•˜ë‹¨
+    glTexCoord2f(1.0, 0.0); glVertex3f(-100, 50, 100);// ìš°ì¸¡ ìƒë‹¨
 
-    //¾ÕÂÊ¸é
-    glTexCoord2f(0.0, 0.0); glVertex3f(-100, 50, -100);// ÁÂÃø »ó´Ü
-    glTexCoord2f(0.0, 1.0); glVertex3f(-100, 50, 100);// ÁÂÃø ÇÏ´Ü
-    glTexCoord2f(1.0, 1.0); glVertex3f(-100, -0.5, 100);// ¿ìÃø ÇÏ´Ü
-    glTexCoord2f(1.0, 0.0); glVertex3f(-100, -0.5, -100);// ¿ìÃø »ó´Ü
+    //ì•ìª½ë©´
+    glTexCoord2f(0.0, 0.0); glVertex3f(-100, 50, -100);// ì¢Œì¸¡ ìƒë‹¨
+    glTexCoord2f(0.0, 1.0); glVertex3f(-100, 50, 100);// ì¢Œì¸¡ í•˜ë‹¨
+    glTexCoord2f(1.0, 1.0); glVertex3f(-100, -0.5, 100);// ìš°ì¸¡ í•˜ë‹¨
+    glTexCoord2f(1.0, 0.0); glVertex3f(-100, -0.5, -100);// ìš°ì¸¡ ìƒë‹¨
 
-    //µŞÂÊ¸é
-    glTexCoord2f(0.0, 0.0); glVertex3f(100, 50, -100);// ÁÂÃø »ó´Ü
-    glTexCoord2f(0.0, 1.0); glVertex3f(100, 50, 100);// ÁÂÃø ÇÏ´Ü
-    glTexCoord2f(1.0, 1.0); glVertex3f(100, -0.5, 100);// ¿ìÃø ÇÏ´Ü
-    glTexCoord2f(1.0, 0.0); glVertex3f(100, 0.5, -100);// ¿ìÃø »ó´Ü
+    //ë’·ìª½ë©´
+    glTexCoord2f(0.0, 0.0); glVertex3f(100, 50, -100);// ì¢Œì¸¡ ìƒë‹¨
+    glTexCoord2f(0.0, 1.0); glVertex3f(100, 50, 100);// ì¢Œì¸¡ í•˜ë‹¨
+    glTexCoord2f(1.0, 1.0); glVertex3f(100, -0.5, 100);// ìš°ì¸¡ í•˜ë‹¨
+    glTexCoord2f(1.0, 0.0); glVertex3f(100, 0.5, -100);// ìš°ì¸¡ ìƒë‹¨
 
     glEnd();
 
@@ -394,7 +399,7 @@ void drawsky() {
 }
 
 void drawground() {
-    // ¹Ù´Ú ±×¸®±â
+    // ë°”ë‹¥ ê·¸ë¦¬ê¸°
     glPushMatrix();
     glColor3f(0.2,0.2,0.2);
     glEnable(GL_TEXTURE_2D);
@@ -402,37 +407,37 @@ void drawground() {
     glBegin(GL_QUADS);
     for (int i = -10; i < 10; i++) {
         for (int j = -10; j < 10; j++) {
-            glTexCoord2f(0.0, 0.0); glVertex3f(i * 30, -0.5, j * 30);                 // ÁÂÃø »ó´Ü
-            glTexCoord2f(0.0, 1.0); glVertex3f(i * 30, -0.5, (j + 1) * 30);          // ÁÂÃø ÇÏ´Ü
-            glTexCoord2f(1.0, 1.0); glVertex3f((i + 1) * 30, -0.5, (j + 1) * 30);    // ¿ìÃø ÇÏ´Ü
-            glTexCoord2f(1.0, 0.0); glVertex3f((i + 1) * 30, -0.5, j * 30);          // ¿ìÃø »ó´Ü
+            glTexCoord2f(0.0, 0.0); glVertex3f(i * 30, -0.5, j * 30);                 // ì¢Œì¸¡ ìƒë‹¨
+            glTexCoord2f(0.0, 1.0); glVertex3f(i * 30, -0.5, (j + 1) * 30);          // ì¢Œì¸¡ í•˜ë‹¨
+            glTexCoord2f(1.0, 1.0); glVertex3f((i + 1) * 30, -0.5, (j + 1) * 30);    // ìš°ì¸¡ í•˜ë‹¨
+            glTexCoord2f(1.0, 0.0); glVertex3f((i + 1) * 30, -0.5, j * 30);          // ìš°ì¸¡ ìƒë‹¨
         }
     }
     glEnd();
     glPopMatrix();
 }
 
-void drawMaze() { //¹Ì·Î ±×¸®±â + ÅØ½ºÃÄ
+void drawMaze() { //ë¯¸ë¡œ ê·¸ë¦¬ê¸° + í…ìŠ¤ì³
 
     for (int i = 0; i < 30; i++) {
         for (int j = 0; j < 30; j++) {
-            if (maze[i][j] == 1) { //º®
+            if (maze[i][j] == 1) { //ë²½
                 glPushMatrix();
                 glTranslatef(-i, 0.0, j);
                 draw_block();
                 glPopMatrix();
 
             }
-            else if (maze[i][j] == 2) { //µµÂøÁ¡
+            else if (maze[i][j] == 2) { //ë„ì°©ì 
                 glColor3d(1, 0, 0);
                 glPushMatrix();
-                teapotX = -i; //Æ¼ÆÌ À§Ä¡ ÀúÀå
+                teapotX = -i; //í‹°íŒŸ ìœ„ì¹˜ ì €ì¥
                 teapotY = 0.0;
                 teapotZ = j;
                 drawTeapot(teapotX, teapotY, teapotZ);
                 glPopMatrix();
             }
-            else { //ºó°ø°£
+            else { //ë¹ˆê³µê°„
                 
             }
             glPopMatrix();
@@ -442,12 +447,12 @@ void drawMaze() { //¹Ì·Î ±×¸®±â + ÅØ½ºÃÄ
     drawground();
 }
 
-// Ãæµ¹ °¨Áö ÇÔ¼ö
+// ì¶©ëŒ ê°ì§€ í•¨ìˆ˜
 bool checkCollision(double pointX, double pointY, double pointZ, double teapotX, double teapotY, double teapotZ, double collisionDistance) {
-    // y ÁÂÇ¥¸¦ ¹«½ÃÇÏ°í x¿Í z ÁÂÇ¥¸¸À» °í·Á
+    // y ì¢Œí‘œë¥¼ ë¬´ì‹œí•˜ê³  xì™€ z ì¢Œí‘œë§Œì„ ê³ ë ¤
     double distanceSquared = (pointX - teapotX) * (pointX - teapotX) + (pointZ - teapotZ) * (pointZ - teapotZ);
 
-    // Ãæµ¹ ¿©ºÎ¸¦ ÆÇ´Ü
+    // ì¶©ëŒ ì—¬ë¶€ë¥¼ íŒë‹¨
     return distanceSquared <= (collisionDistance * collisionDistance);
 }
 
@@ -456,14 +461,14 @@ void display()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-    glViewport(width / 2 - 100, 0, 800, height); //¿À¸¥ÂÊ ºäÆ÷Æ®
+    glViewport(width / 2 - 100, 0, 800, height); //ì˜¤ë¥¸ìª½ ë·°í¬íŠ¸
     glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();  // ¸ğµ¨ºä Çà·Ä ÃÊ±âÈ­
+    glLoadIdentity();  // ëª¨ë¸ë·° í–‰ë ¬ ì´ˆê¸°í™”
     camera();
     drawMaze();
 
-    glViewport(0, 0, height, height);//¿ŞÂÊ ºäÆ÷Æ®
-    glLoadIdentity();  // ¸ğµ¨ºä Çà·Ä ÃÊ±âÈ­
+    glViewport(0, 0, height, height);//ì™¼ìª½ ë·°í¬íŠ¸
+    glLoadIdentity();  // ëª¨ë¸ë·° í–‰ë ¬ ì´ˆê¸°í™”
     glMatrixMode(GL_MODELVIEW);
     gluLookAt(
         -15, 25, 15,
@@ -472,15 +477,15 @@ void display()
     );
 
     drawMaze();
-    // ¿ŞÂÊ ºäÆ÷Æ®¿¡ Á¡ ±×¸®±â
+    // ì™¼ìª½ ë·°í¬íŠ¸ì— ì  ê·¸ë¦¬ê¸°
     glPointSize(8.0f);
     glBegin(GL_POINTS);
     glColor3f(0.0f, 1.0f, 1.0f);
-    glVertex3f(camX, 0.0f, camZ); // ¿øÇÏ´Â ÁÂÇ¥¿¡ Á¡ Âï±â
+    glVertex3f(camX, 0.0f, camZ); // ì›í•˜ëŠ” ì¢Œí‘œì— ì  ì°ê¸°
     glEnd();
 
     if (checkCollision(teapotX, teapotY, teapotZ, camX, 0.0f, camZ, 0.3)) {
-        std::this_thread::sleep_for(std::chrono::seconds(3)); //3ÃÊ ´ë±â
+        std::this_thread::sleep_for(std::chrono::seconds(3)); //3ì´ˆ ëŒ€ê¸°
         exit(0);
     }
     glutSwapBuffers();
@@ -502,8 +507,9 @@ void timer(int)
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-    glutInitWindowSize(width, height);  // Ã¢ Å©±â
-    glutCreateWindow("182947 °­Ã¢¿ì");
+    glutInitWindowPosition(0,30);
+    glutInitWindowSize(width, height);  // ì°½ í¬ê¸°
+    glutCreateWindow("182947 ê°•ì°½ìš°");
 
     glEnable(GL_DEPTH_TEST);
 
