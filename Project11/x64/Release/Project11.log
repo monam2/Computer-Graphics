@@ -1,0 +1,36 @@
+﻿  소스.cpp
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(87,39): error C2664: 'AUX_RGBImageRec *auxDIBImageLoadW(LPCWSTR)': 인수 1을(를) 'const char [14]'에서 'LPCWSTR'(으)로 변환할 수 없습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(87,55): message : 가리킨 형식이 관련이 없습니다. 변환하려면 reinterpret_cast, C 스타일 캐스트 또는 괄호가 있는 함수 스타일 캐스트가 필요합니다.
+C:\Users\kcw01\source\repos\Project11\Project11\glaux.h(311,28): message : 'auxDIBImageLoadW' 선언을 참조하십시오.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(87,39): message : 인수 목록 '(const char [14])'을(를) 일치시키는 동안
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(100,39): error C2664: 'AUX_RGBImageRec *auxDIBImageLoadW(LPCWSTR)': 인수 1을(를) 'const char [14]'에서 'LPCWSTR'(으)로 변환할 수 없습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(100,55): message : 가리킨 형식이 관련이 없습니다. 변환하려면 reinterpret_cast, C 스타일 캐스트 또는 괄호가 있는 함수 스타일 캐스트가 필요합니다.
+C:\Users\kcw01\source\repos\Project11\Project11\glaux.h(311,28): message : 'auxDIBImageLoadW' 선언을 참조하십시오.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(100,39): message : 인수 목록 '(const char [14])'을(를) 일치시키는 동안
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(112,39): error C2664: 'AUX_RGBImageRec *auxDIBImageLoadW(LPCWSTR)': 인수 1을(를) 'const char [13]'에서 'LPCWSTR'(으)로 변환할 수 없습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(112,55): message : 가리킨 형식이 관련이 없습니다. 변환하려면 reinterpret_cast, C 스타일 캐스트 또는 괄호가 있는 함수 스타일 캐스트가 필요합니다.
+C:\Users\kcw01\source\repos\Project11\Project11\glaux.h(311,28): message : 'auxDIBImageLoadW' 선언을 참조하십시오.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(112,39): message : 인수 목록 '(const char [13])'을(를) 일치시키는 동안
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(155,46): warning C4244: '+=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(156,46): warning C4244: '-=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(160,52): warning C4244: '+=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(161,52): warning C4244: '-=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(165,62): warning C4244: '+=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(166,62): warning C4244: '-=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(170,62): warning C4244: '+=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(171,62): warning C4244: '-=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(342,38): warning C4305: '+=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(348,38): warning C4305: '-=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(404,26): warning C4305: '인수': 'double'에서 'GLfloat'(으)로 잘립니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(410,64): warning C4244: '인수': 'int'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(410,50): warning C4244: '인수': 'int'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(411,70): warning C4244: '인수': 'int'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(411,50): warning C4244: '인수': 'int'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(412,76): warning C4244: '인수': 'int'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(412,56): warning C4244: '인수': 'int'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(413,70): warning C4244: '인수': 'int'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(413,56): warning C4244: '인수': 'int'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(426,39): warning C4244: '인수': 'int'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(426,30): warning C4244: '인수': 'int'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(434,27): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\kcw01\source\repos\Project11\Project11\소스.cpp(436,27): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
